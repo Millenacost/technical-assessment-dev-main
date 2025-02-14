@@ -13,7 +13,7 @@ class Base extends TimeStamps {
 }
 
 @pre<User>('save', async function (next) {
-  const region = this as Omit<any, keyof User> & User;
+  const region = this as Omit<unknown, keyof User> & User & mongoose.Document;
 
   if (region.isModified('coordinates')) {
     region.address = await lib.getAddressFromCoordinates(region.coordinates);
@@ -43,7 +43,7 @@ export class User extends Base {
 }
 
 @pre<Region>('save', async function (next) {
-  const region = this as Omit<any, keyof Region> & Region;
+  const region = this as mongoose.Document & Region;
 
   if (!region._id) {
     region._id = new ObjectId().toString();

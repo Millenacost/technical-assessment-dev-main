@@ -14,7 +14,7 @@ import server from './server';
 describe('Models', () => {
   let user;
   let session;
-  let geoLibStub: Partial<typeof GeoLib> = {};
+  const geoLibStub: Partial<typeof GeoLib> = {};
 
   before(async () => {
     geoLibStub.getAddressFromCoordinates = sinon.stub(GeoLib, 'getAddressFromCoordinates').resolves(faker.location.streetAddress({ useFullAddress: true }));
@@ -65,7 +65,7 @@ describe('Models', () => {
         await RegionModel.create([{ user: user._id }]);
 
         assert.fail('Should have thrown an error');
-      } catch (error) {
+      } catch {
         const updatedUserRecord = await UserModel.findOne({ _id: user._id }).select('regions').lean();
 
         expect(userRecord).to.deep.eq(updatedUserRecord);
