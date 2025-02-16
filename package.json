@@ -28,6 +28,7 @@
     "@types/reflect-metadata": "^0.1.0",
     "@types/sinon": "^10.0.17",
     "@types/supertest": "^2.0.13",
+    "dotenv": "^16.4.7",
     "eslint": "^9.20.1",
     "globals": "^15.15.0",
     "mocha": "^10.2.0",
