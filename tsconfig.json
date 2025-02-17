@@ -4,7 +4,9 @@
     "target": "es2022",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "rootDir": "./src",
+    "outDir": "./dist",      
   },
   "types": ["reflect-metadata", "mocha"],
   "exclude": [

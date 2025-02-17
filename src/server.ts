@@ -5,7 +5,9 @@ import init from "./database";
 const server = app();
 const router = app.Router();
 
-router.get("/user", async (req, res) => {
+server.use(app.json());
+
+router.get("/users", async (req, res) => {
 	return new UserController().getAll(req, res);
 });
 
@@ -15,6 +17,10 @@ router.get("/users/:id", async (req, res) => {
 
 router.put("/users/:id", async (req, res) => {
 	return new UserController().updateById(req, res);
+});
+
+router.post("/users", async (req, res) => {
+	return new UserController().create(req, res);
 });
 
 server.use(router);
@@ -28,3 +34,5 @@ init()
 	.catch((error) => {
 		console.error("Error connecting to mongodb", error);
 	});
+
+export default server;

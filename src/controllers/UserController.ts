@@ -46,7 +46,7 @@ class UserController {
 	async updateById(req: Request, res: Response) {
 		try {
 			const { id } = req.params;
-			const { update } = req.body;
+			const userUpdate = req.body as User;
 
 			const user = await UserModel.findOne({ _id: id });
 
@@ -54,11 +54,36 @@ class UserController {
 				return res.status(STATUS.NOT_FOUND).json({ message: "User not found" });
 			}
 
-			user.name = update.name;
+			Object.keys(userUpdate).forEach((key) => {
+				if (userUpdate[key] !== undefined) {
+					user[key] = userUpdate[key];
+				}
+			});
 
 			await user.save();
 
 			return res.sendStatus(STATUS.UPDATED);
+		} catch (error) {
+			return res
+				.status(STATUS.INTERNAL_SERVER_ERROR)
+				.json({ message: "Internal Server Error", error });
+		}
+	}
+
+	async create(req: Request, res: Response) {
+		try {
+			const user = new UserModel(req.body as User);
+
+			const userFound = await UserModel.findOne({ email: user.email });
+
+			if (userFound) {
+				return res
+					.status(STATUS.BAD_REQUEST)
+					.json({ message: "User already exists" });
+			}
+			await user.save();
+
+			return res.status(STATUS.CREATED).json(user);
 		} catch (error) {
 			return res
 				.status(STATUS.INTERNAL_SERVER_ERROR)
