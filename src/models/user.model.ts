@@ -8,13 +8,11 @@ import { ICoordinates } from "../interfaces/coordinates.interface";
 @pre<User>("save", async function (next) {
 	const user = this as Omit<unknown, keyof User> & User & mongoose.Document;
 
-	if (user.isNew) {
-		if (
-			(user.coordinates && user.address) ||
-			(!user.coordinates && !user.address)
-		) {
-			return next(new Error("You must provide either coordinates or address"));
-		}
+	if (
+		(user.coordinates && user.address) ||
+		(!user.coordinates && !user.address)
+	) {
+		return next(new Error("You must provide either coordinates or address"));
 	}
 
 	if (user.isModified("coordinates")) {
