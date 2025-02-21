@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { STATUS } from "../constants/status.constants";
-import { User, UserModel } from "../models/user.model";
+import { User } from "../models/user.model";
+import { UserModel } from "../models/models";
 
 class UserController {
 	async getAll(req: Request, res: Response) {

@@ -7,10 +7,10 @@ import { faker } from "@faker-js/faker";
 import { expect, assert } from "chai";
 
 import "./database";
-import { Region, RegionModel } from "./models/region.model";
+import { Region } from "./models/region.model";
 import GeoLib from "./lib";
 import server from "./server";
-import { UserModel } from "./models/user.model";
+import { RegionModel, UserModel } from "./models/models";
 
 describe("Models", () => {
 	let user;

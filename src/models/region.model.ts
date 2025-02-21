@@ -1,16 +1,11 @@
 import "reflect-metadata";
 
 import * as mongoose from "mongoose";
-import {
-	pre,
-	getModelForClass,
-	Prop,
-	Ref,
-	modelOptions,
-} from "@typegoose/typegoose";
-import { User, UserModel } from "./user.model";
+import { pre, Prop, Ref, modelOptions } from "@typegoose/typegoose";
+import { User } from "./user.model";
 import { Base } from "./base.model";
 import ObjectId = mongoose.Types.ObjectId;
+import { UserModel } from "./models";
 
 @pre<Region>("save", async function (next) {
 	const region = this as mongoose.Document & Region;
@@ -37,5 +32,3 @@ export class Region extends Base {
 	@Prop({ ref: () => User, required: true, type: () => String })
 	user: Ref<User>;
 }
-
-export const RegionModel = getModelForClass(Region);
