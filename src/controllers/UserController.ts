@@ -49,6 +49,12 @@ class UserController {
 			const { id } = req.params;
 			const userUpdate = req.body as User;
 
+			if (!this.hasCoordinatesOrAddress(userUpdate)) {
+				return res
+					.status(STATUS.BAD_REQUEST)
+					.json({ message: "You must provide coordinates or address" });
+			}
+
 			const user = await UserModel.findOne({ _id: id });
 
 			if (!user) {
@@ -74,6 +80,12 @@ class UserController {
 	async create(req: Request, res: Response) {
 		try {
 			const user = new UserModel(req.body as User);
+
+			if (!this.hasCoordinatesOrAddress(user)) {
+				return res
+					.status(STATUS.BAD_REQUEST)
+					.json({ message: "You must provide coordinates or address" });
+			}
 
 			const userFound = await UserModel.findOne({ email: user.email });
 
@@ -110,6 +122,16 @@ class UserController {
 				.status(STATUS.INTERNAL_SERVER_ERROR)
 				.json({ message: "Internal Server Error", error });
 		}
+	}
+
+	private hasCoordinatesOrAddress(user: User) {
+		if (
+			(user.coordinates && user.address) ||
+			(!user.coordinates && !user.address)
+		) {
+			return false;
+		}
+		return true;
 	}
 }
 

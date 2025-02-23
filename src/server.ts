@@ -39,6 +39,18 @@ router.get("/regions/point/distance/user", async (req, res) => {
 	);
 });
 
+router.post("/regions", async (req, res) => {
+	return new RegionController().create(req, res);
+});
+
+router.put("/regions/:id", async (req, res) => {
+	return new RegionController().updateById(req, res);
+});
+
+router.delete("/regions/:id", async (req, res) => {
+	return new RegionController().deleteById(req, res);
+});
+
 server.use(router);
 
 init()
