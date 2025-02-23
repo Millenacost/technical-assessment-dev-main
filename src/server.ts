@@ -23,6 +23,10 @@ router.post("/users", async (req, res) => {
 	return new UserController().create(req, res);
 });
 
+router.delete("/users/:id", async (req, res) => {
+	return new UserController().deleteById(req, res);
+});
+
 server.use(router);
 
 init()

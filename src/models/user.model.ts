@@ -26,8 +26,6 @@ import { ICoordinates } from "../interfaces/coordinates.interface";
 	next();
 })
 export class User extends Base {
-	declare _id: string;
-
 	@Prop({ required: true })
 	name!: string;
 

@@ -91,6 +91,26 @@ class UserController {
 				.json({ message: "Internal Server Error", error });
 		}
 	}
+
+	async deleteById(req: Request, res: Response) {
+		try {
+			const { id } = req.params;
+
+			const user = await UserModel.findOne({ _id: id });
+
+			if (!user) {
+				return res.status(STATUS.NOT_FOUND).json({ message: "User not found" });
+			}
+
+			await UserModel.deleteOne({ _id: id });
+
+			return res.sendStatus(STATUS.OK);
+		} catch (error) {
+			return res
+				.status(STATUS.INTERNAL_SERVER_ERROR)
+				.json({ message: "Internal Server Error", error });
+		}
+	}
 }
 
 export { UserController };
