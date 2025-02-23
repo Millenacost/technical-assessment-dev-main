@@ -1,6 +1,7 @@
 import app from "express";
 import { UserController } from "./controllers/UserController";
 import init from "./database";
+import { RegionController } from "./controllers/RegionController";
 
 const server = app();
 const router = app.Router();
@@ -25,6 +26,10 @@ router.post("/users", async (req, res) => {
 
 router.delete("/users/:id", async (req, res) => {
 	return new UserController().deleteById(req, res);
+});
+
+router.get("/regions/point", async (req, res) => {
+	return new RegionController().getRegionsByPoint(req, res);
 });
 
 server.use(router);

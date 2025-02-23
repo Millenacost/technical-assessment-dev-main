@@ -24,11 +24,12 @@ import { UserModel } from "./models";
 })
 @modelOptions({ schemaOptions: { validateBeforeSave: false } })
 export class Region extends Base {
-	declare _id: string;
-
 	@Prop({ required: true })
 	name!: string;
 
 	@Prop({ ref: () => User, required: true, type: () => String })
 	user: Ref<User>;
+
+	@Prop({ required: true, type: () => [[Number]] })
+	coordinates: [number, number][][];
 }
