@@ -30,6 +30,9 @@ export class Region extends Base {
 	@Prop({ ref: () => User, required: true, type: () => String })
 	user: Ref<User>;
 
-	@Prop({ required: true, type: () => [[Number]] })
-	coordinates: [number, number][][];
+	@Prop({ required: true, type: Object })
+	coordinates: {
+		type: "Polygon";
+		coordinates: [number, number][][];
+	};
 }

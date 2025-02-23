@@ -60,9 +60,12 @@ describe("Models", () => {
 			const regionData: Omit<Region, "_id"> = {
 				user: user._id,
 				name: faker.person.fullName(),
-				coordinates: [
-					[[faker.location.latitude(), faker.location.longitude()]],
-				],
+				coordinates: {
+					type: "Polygon",
+					coordinates: [
+						[[faker.location.latitude(), faker.location.longitude()]],
+					],
+				},
 			};
 
 			const [region] = await RegionModel.create([regionData]);

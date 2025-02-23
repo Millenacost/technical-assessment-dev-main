@@ -32,6 +32,13 @@ router.get("/regions/point", async (req, res) => {
 	return new RegionController().getRegionsByPoint(req, res);
 });
 
+router.get("/regions/point/distance/user", async (req, res) => {
+	return new RegionController().getRegionsByPointByDistanceWithoutUser(
+		req,
+		res
+	);
+});
+
 server.use(router);
 
 init()
