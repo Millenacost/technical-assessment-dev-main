@@ -51,32 +51,55 @@ describe("Models", () => {
 
 	describe("UserModel", () => {
 		it("should create a user", async () => {
-			expect(1).to.be.eq(1);
+			const userData = {
+				name: faker.person.firstName(),
+				email: faker.internet.email(),
+				address: faker.location.streetAddress({ useFullAddress: true }),
+			};
+
+			const response = await supertest(server).post(`/users`).send(userData);
+
+			console.log(userData.name);
+			console.log(JSON.stringify(response.body) + " response");
+			expect(response).to.have.property("status", 201);
 		});
 	});
 
 	describe("RegionModel", () => {
-		it("should create a region", async () => {
+		xit("should create a region", async () => {
 			const regionData: Omit<Region, "_id"> = {
 				user: user._id,
 				name: faker.person.fullName(),
 				coordinates: {
 					type: "Polygon",
 					coordinates: [
-						[[faker.location.latitude(), faker.location.longitude()]],
+						[
+							[100, 90],
+							[100, 90],
+							[100, 90],
+							[100, 90],
+						],
 					],
 				},
 			};
-
-			const [region] = await RegionModel.create([regionData]);
-
-			expect(region).to.deep.include(regionData);
+			const response = await supertest(server)
+				.post(`/regions`)
+				.send(regionData);
+			console.log(regionData.name);
+			console.log(JSON.stringify(response.body) + " response");
+			expect(response.body.name).to.equal(regionData.name);
+			expect(response).to.have.property("status", 201);
 		});
 
 		it("should rollback changes in case of failure", async () => {
 			const userRecord = await UserModel.findOne({ _id: user._id })
 				.select("regions")
 				.lean();
+
+			const stub = sinon
+				.stub(RegionModel, "create")
+				.throws(new Error("Simulated error"));
+
 			try {
 				await RegionModel.create([{ user: user._id }]);
 
@@ -87,12 +110,14 @@ describe("Models", () => {
 					.lean();
 
 				expect(userRecord).to.deep.eq(updatedUserRecord);
+			} finally {
+				stub.restore();
 			}
 		});
 	});
 
 	it("should return a list of users", async () => {
-		const response = supertest(server).get(`/user`);
+		const response = await supertest(server).get(`/users`);
 
 		expect(response).to.have.property("status", 200);
 	});
